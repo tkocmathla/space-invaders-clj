@@ -1,9 +1,10 @@
 (ns space-invaders-clj.machine
   (:require
     [i8080-clj.core :as cpu]
-    [i8080-clj.opfns :refer [>> << |] :as opfns]))
+    [i8080-clj.opfns :refer [>> << |] :as opfns]
+    [taoensso.timbre :as log]))
 
-(def ^:dynamic *debug* false)
+(def refresh-rate 16667)
 
 (def machine
   {; interrupt code
@@ -33,14 +34,14 @@
   (let [a (get machine :cpu/a)]
     (case port
       2 (assoc machine :mach/sh-off (bit-and a 0x7))
-      4 (assoc machine :mach/sh-lo sh-hi :mach/sh-hi a)
+      4 (assoc machine :mach/sh-lo sh-hi, :mach/sh-hi a)
       ; else
       machine)))
 
 (defn handle-interrupt
   [machine]
   (let [{:keys [mach/cycles mach/int-code cpu/int-enable?]} machine
-        interrupt? (and int-enable? (>= cycles 16667))]
+        interrupt? (and int-enable? (>= cycles refresh-rate))]
     (cond-> machine
       (and interrupt? (= 1 int-code))
       (merge (cpu/interrupt machine 1) {:mach/cycles 0, :mach/int-code 2})
@@ -51,11 +52,11 @@
 (defn step-cpu
   ""
   [machine]
-  (let [{:keys [mach/cycles] :as m} (handle-interrupt machine)
-        op (cpu/disassemble-op m)]
-    (when *debug*
-      (println (format "%04x" (get m :cpu/pc)) (:op op) (:args op)))
-    (cond-> (update m :mach/cycles + (:cycles op))
+  (let [m (handle-interrupt machine)
+        op (cpu/disassemble-op m)
+        m (update m :mach/cycles + (:cycles op))]
+    (log/trace (format "%04x" (get m :cpu/pc)) (:op op) (:args op))
+    (cond-> m
       (= :IN (:op op))
       (-> (handle-in (first (:args op)))
           (update :cpu/pc + 2))

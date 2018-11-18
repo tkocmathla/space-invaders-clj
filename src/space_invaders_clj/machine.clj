@@ -1,4 +1,4 @@
-(ns space-invaders.machine
+(ns space-invaders-clj.machine
   (:require
     [i8080-clj.core :as cpu]
     [i8080-clj.opfns :refer [>> << |] :as opfns]))

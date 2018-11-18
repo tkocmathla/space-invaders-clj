@@ -1,4 +1,4 @@
-(ns space-invaders.db)
+(ns space-invaders-clj.db)
 
 (def schema
   {:cpu/a           {:db/cardinality :db.cardinality/one}

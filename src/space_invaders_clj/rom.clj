@@ -1,4 +1,4 @@
-(ns space-invaders.rom
+(ns space-invaders-clj.rom
   (:require
     [clojure.java.io :as io]
     [i8080-clj.core :refer [disassemble-op]]))

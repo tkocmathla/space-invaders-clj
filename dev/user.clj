@@ -7,10 +7,10 @@
     [integrant.core :as ig]
     [integrant.repl :as ir :refer [clear go halt prep init reset reset-all]]
     [integrant.repl.state :as irs]
-    [space-invaders.db :as db]
-    [space-invaders.machine :as machine]
-    [space-invaders.rom :as rom]
-    [space-invaders.system :as system]
+    [space-invaders-clj.db :as db]
+    [space-invaders-clj.machine :as machine]
+    [space-invaders-clj.rom :as rom]
+    [space-invaders-clj.system :as system]
     [taoensso.tufte :refer [p profile] :as tufte])
   (:use [cemerick.pomegranate :only [add-dependencies]]))
 

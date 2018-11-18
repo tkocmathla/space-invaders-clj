@@ -1,4 +1,4 @@
-(ns space-invaders.sketch
+(ns space-invaders-clj.sketch
   (:require
     [i8080-clj.opfns :refer [>>]]
     [quil.core :as q]))

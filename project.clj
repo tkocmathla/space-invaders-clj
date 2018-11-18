@@ -1,4 +1,4 @@
-(defproject space-invaders "0.1.0-SNAPSHOT"
+(defproject space-invaders-clj "0.1.0-SNAPSHOT"
   :description ""
   :url ""
   :license {:name "Eclipse Public License"

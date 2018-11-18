@@ -1,14 +1,14 @@
-(ns space-invaders.system
+(ns space-invaders-clj.system
   (:require
     [datascript.core :as d]
     [i8080-clj.core :as cpu]
     [integrant.core :as ig]
     [quil.core :as q]
     [quil.middleware :as qm]
-    [space-invaders.db :as db]
-    [space-invaders.machine :as mach]
-    [space-invaders.rom :as rom]
-    [space-invaders.sketch :as sketch]))
+    [space-invaders-clj.db :as db]
+    [space-invaders-clj.machine :as mach]
+    [space-invaders-clj.rom :as rom]
+    [space-invaders-clj.sketch :as sketch]))
 
 (def config
   {:db/atom {:rom-file "invaders.rom"}

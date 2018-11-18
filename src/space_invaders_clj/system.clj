@@ -38,3 +38,6 @@
       :draw sketch/draw
       :middleware [qm/fun-mode]
       :features [:no-bind-output])))
+
+(defmethod ig/halt-key! :quil/sketch [_ applet]
+  (.dispose applet))

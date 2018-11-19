@@ -16,6 +16,7 @@
 
 (def debug-config
   {:db/conn {:schema db/schema, :rom-file "invaders.rom"}
+   :db/log {:conn (ig/ref :db/conn)}
    :quil/sketch {:conn (ig/ref :db/conn)}})
 
 (defmethod ig/init-key :db/atom [_ {:keys [rom-file]}]
@@ -27,6 +28,11 @@
     (d/transact! conn [(merge cpu/cpu mach/machine)])
     (d/transact! conn [{:db/id 1 :cpu/mem (rom/load-rom cpu/cpu rom-file)}])
     conn))
+
+(defmethod ig/init-key :db/log [_ {:keys [conn]}]
+  (let [log (atom [])]
+    (d/listen! conn #(swap! log conj %))
+    log))
 
 (defmethod ig/init-key :quil/sketch [_ {:keys [conn]}]
   (let [state-fn (if (instance? datascript.db.DB @conn)

@@ -29,7 +29,7 @@
     conn))
 
 (defmethod ig/init-key :quil/sketch [_ {:keys [conn]}]
-  (let [state-fn (if (instance? datascript.db.DB conn)
+  (let [state-fn (if (instance? datascript.db.DB @conn)
                    #(d/pull @conn [:*] 1)
                    #(deref conn))]
     (q/sketch

@@ -11,6 +11,8 @@
     [space-invaders-clj.machine :as machine]
     [space-invaders-clj.rom :as rom]
     [space-invaders-clj.system :as system]
+    [taoensso.timbre :as log]
+    [taoensso.timbre.appenders.core :as appenders]
     [taoensso.tufte :refer [p profile] :as tufte])
   (:use [cemerick.pomegranate :only [add-dependencies]]))
 
@@ -21,10 +23,13 @@
 
 
 (tufte/add-basic-println-handler! {})
-(ir/set-prep! (constantly system/config))
+(log/merge-config!
+  {:appenders {:println {:enabled? false}
+               :spit (appenders/spit-appender {:fname "trace.log"})}
+   :output-fn (fn [{:keys [timestamp_ msg_]}] (str (force timestamp_) " " (force msg_)))})
 
-#_
-(reset)
+
+(ir/set-prep! (constantly system/config))
 
 (def debug-state-fn #(d/pull @(:db/conn irs/system) [:*] 1))
 (def state-fn #(deref (:db/atom irs/system)))
@@ -38,6 +43,11 @@
 (def step
   #(reset! (:db/atom irs/system) (machine/step-cpu (state-fn))))
 
+
+#_(halt)
+#_(reset)
+
 #_
-(do (doall (repeatedly 100000 step))
-    (state-fn))
+(log/with-level :error
+  (doall (repeatedly 1000000 step))
+  (state-fn))

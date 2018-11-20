@@ -20,8 +20,10 @@
    :cpu/cc/cy {:db/cardinality :db.cardinality/one}
    :cpu/cc/ac {:db/cardinality :db.cardinality/one}
 
-   :mach/int-code {:db/cardinality :db.cardinality/one}
-   :mach/cycles   {:db/cardinality :db.cardinality/one}
-   :mach/sh-lo    {:db/cardinality :db.cardinality/one}
-   :mach/sh-hi    {:db/cardinality :db.cardinality/one}
-   :mach/sh-off   {:db/cardinality :db.cardinality/one}})
+   :mach/last-op   {:db/cardinality :db.cardinality/one}
+   :mach/last-args {:db/cardinality :db.cardinality/one}
+   :mach/int-code  {:db/cardinality :db.cardinality/one}
+   :mach/cycles    {:db/cardinality :db.cardinality/one}
+   :mach/sh-lo     {:db/cardinality :db.cardinality/one}
+   :mach/sh-hi     {:db/cardinality :db.cardinality/one}
+   :mach/sh-off    {:db/cardinality :db.cardinality/one}})

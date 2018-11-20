@@ -19,6 +19,7 @@
    :db/log {:conn (ig/ref :db/conn)}
    :quil/sketch {:conn (ig/ref :db/conn)}})
 
+
 (defmethod ig/init-key :db/atom [_ {:keys [rom-file]}]
   (atom (assoc (merge cpu/cpu mach/machine)
                :cpu/mem (rom/load-rom cpu/cpu rom-file))))
@@ -44,6 +45,7 @@
       :draw sketch/draw
       :middleware [qm/fun-mode]
       :features [:no-bind-output])))
+
 
 (defmethod ig/halt-key! :quil/sketch [_ applet]
   (.dispose applet))

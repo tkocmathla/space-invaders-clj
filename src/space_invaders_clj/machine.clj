@@ -62,15 +62,14 @@
   (let [m (handle-interrupt machine)
         {:keys [op args cycles] :as opmap} (cpu/disassemble-op m)]
     (log/trace (format "%04x" (get m :cpu/pc)) op args)
-    (-> m
-        (assoc :mach/last-op op, :mach/last-args (or args []))
-        (update :mach/cycles + cycles)
-        (cond->
-          (= :IN op)
-          (-> (handle-in (first args)) (update :cpu/pc + 2))
+    (cond
+      (= :IN op)
+      (-> m (handle-in (first args)) (update :cpu/pc + 2))
 
-          (= :OUT op)
-          (-> (handle-out (first args)) (update :cpu/pc + 2))
+      (= :OUT op)
+      (-> m (handle-out (first args)) (update :cpu/pc + 2))
 
-          :else
-          (merge (cpu/execute-op m opmap))))))
+      :else
+      (-> (cpu/execute-op m opmap)
+          (assoc :mach/last-op op, :mach/last-args (or args []))
+          (update :mach/cycles + cycles)))))

@@ -1,7 +1,5 @@
 (ns space-invaders-clj.rom
-  (:require
-    [clojure.java.io :as io]
-    [i8080-clj.core :refer [disassemble-op]]))
+  (:require [clojure.java.io :as io]))
 
 (defn read-binary-file
   "Reads slurpable file into a vector of bytes"

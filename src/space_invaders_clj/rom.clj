@@ -8,7 +8,7 @@
     (let [len (.length (io/file file))
           buf (byte-array len)]
       (.read in buf 0 len)
-      (vec buf))))
+      (mapv (partial bit-and 0xff) buf))))
 
 (defn load-rom
   [state rom]

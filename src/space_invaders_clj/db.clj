@@ -26,4 +26,5 @@
    :mach/cycles    {:db/cardinality :db.cardinality/one}
    :mach/sh-lo     {:db/cardinality :db.cardinality/one}
    :mach/sh-hi     {:db/cardinality :db.cardinality/one}
-   :mach/sh-off    {:db/cardinality :db.cardinality/one}})
+   :mach/sh-off    {:db/cardinality :db.cardinality/one}
+   :mach/port1     {:db/cardinality :db.cardinality/one}})

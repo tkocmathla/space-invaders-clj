@@ -11,6 +11,7 @@
     [space-invaders-clj.db :as db]
     [space-invaders-clj.machine :as machine]
     [space-invaders-clj.rom :as rom]
+    [space-invaders-clj.sprites :as sprites]
     [space-invaders-clj.system :as system]
     [taoensso.timbre :as log]
     [taoensso.timbre.appenders.core :as appenders]
@@ -34,11 +35,26 @@
 #_
 (log/with-level :debug
   (ir/set-prep! (constantly system/config))
-  (go))
-
+  (go)
+  (future (dorun (repeatedly #(machine/step-cpu (:machine irs/system))))))
 #_#_
 (halt)
 (reset-all)
+#_
+(tufte/profile {} (dorun (repeatedly 10000 #(machine/step-cpu (:machine irs/system)))))
+#_
+(pprint (dissoc @(:machine irs/system) :cpu/mem))
+
+; unpack sprites
+;
+; 0x1d64 24 flying saucer
+; 0x1cc0 16 alien exploding
+; 0x1c10  8 alien 2
+#_
+(let [mem (rom/load-rom (:cpu/mem (cpu/cpu)) "invaders.rom")
+      sprite (sprites/unpack-sprite mem 0x1c10 16)]
+  (sprites/draw-sprite sprite {:scale 8}))
+
 
 
 ;; debug run
@@ -46,10 +62,13 @@
 (log/with-level :debug
   (ir/set-prep! (constantly system/debug-config))
   (go))
-
 #_#_
 (halt)
 (reset-all)
+#_
+(profile {} (dorun (repeatedly 100000 #(machine/step-cpu (:machine irs/system)))))
+#_
+(count @(:log irs/system))
 
 ; peek at last txn
 #_

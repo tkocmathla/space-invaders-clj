@@ -11,8 +11,10 @@
       (mapv (partial bit-and 0xff) buf))))
 
 (defn load-rom
-  [state rom]
-  (let [mem-len (count (:cpu/mem state))
+  [mem rom]
+  (let [mem-len (count mem)
         rom (read-binary-file (io/resource rom))
         rom-len (count rom)]
-    (vec (concat rom (subvec (:cpu/mem state) rom-len)))))
+    (doseq [i (range rom-len)]
+      (aset-int mem i (rom i)))
+    mem))

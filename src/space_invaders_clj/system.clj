@@ -13,13 +13,13 @@
 
 (def config
   {:machine {:rom-file "invaders.rom"}
-   :sketch {:machine (ig/ref :machine), :scale 3}})
+   :sketch {:machine (ig/ref :machine), :scale 2}})
 
 (def debug-config
   {:machine {:rom-file "invaders.rom"}
    :conn {:schema db/schema, :machine (ig/ref :machine)}
    :log {:conn (ig/ref :conn), :machine (ig/ref :machine)}
-   :sketch {:machine (ig/ref :machine), :scale 3}})
+   :sketch {:machine (ig/ref :machine), :scale 2}})
 
 ;; -----------------------------------------------------------------------------
 

@@ -25,7 +25,7 @@
   The image is created with the orientation of the framebuffer in memory, and
   is rotated at draw time to appear correctly."
   [scale machine]
-  (q/frame-rate 60)
+  (q/frame-rate 30)
   {:image (q/create-image h w :rgb)
    :scale scale
    :machine machine})
@@ -40,9 +40,9 @@
   (q/resize image h w)
   (let [pxs (q/pixels image)]
     (doseq [xy (range 7168) ; 7168 = 224 * 256 / 8
-            :let [b (get-byte @machine (+ framebuffer xy))]
-            i (range 8)]
-      (aset-int pxs (+ (* xy 8) i) (color xy i b))))
+            :let [byt (get-byte @machine (+ framebuffer xy))]
+            bit (range 8)]
+      (aset-int pxs (+ (* xy 8) bit) (color xy bit byt))))
   (q/update-pixels image)
   (q/resize image (* h scale) 0)
   (q/image image 0 0))

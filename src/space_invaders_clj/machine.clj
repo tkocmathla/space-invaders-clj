@@ -76,7 +76,7 @@
 (defn handle-interrupt
   [machine]
   (let [{:keys [^long mach/cycles mach/int-code cpu/int-enable?]} @machine
-        interrupt? (and int-enable? (>= cycles (long refresh-rate)))]
+        interrupt? (and int-enable? (>= cycles refresh-rate))]
     (cond-> machine
       (and interrupt? (= 1 int-code))
       (swap! merge (apply dissoc (opfns/interrupt @machine 1) (keys initial-machine)) {:mach/cycles 0, :mach/int-code 2})
@@ -88,7 +88,7 @@
   ""
   [machine]
   (handle-interrupt machine)
-  (let [{:keys [op args size cycles] :as opmap} (cpu/disassemble-op @machine)]
+  (let [{:keys [op args size ^long cycles] :as opmap} (cpu/disassemble-op @machine)]
     (log/trace (format "%04x" (:cpu/pc @machine)) op (mapv (partial format "0x%02x") args))
     (cond
       (= :IN op)
@@ -108,26 +108,6 @@
       :else
       (swap! machine
              (fn [m]
-               (let [new-m (cpu/execute-op m opmap)]
-                 (-> m
-                     (assoc
-                       :cpu/a (:cpu/a new-m)
-                       :cpu/b (:cpu/b new-m)
-                       :cpu/c (:cpu/c new-m)
-                       :cpu/d (:cpu/d new-m)
-                       :cpu/e (:cpu/e new-m)
-                       :cpu/h (:cpu/h new-m)
-                       :cpu/l (:cpu/l new-m)
-                       :cpu/pc (:cpu/pc new-m)
-                       :cpu/sp (:cpu/sp new-m)
-                       :cpu/mem (:cpu/mem new-m)
-                       :cpu/int-enable? (:cpu/int-enable? new-m)
-                       :cpu/nopc? (:cpu/nopc? new-m)
-                       :cpu/cc/ac (:cpu/cc/ac new-m)
-                       :cpu/cc/cy (:cpu/cc/cy new-m)
-                       :cpu/cc/p (:cpu/cc/p new-m)
-                       :cpu/cc/s (:cpu/cc/s new-m)
-                       :cpu/cc/z (:cpu/cc/z new-m)
-                       :mach/last-op op
-                       :mach/last-args (or args []))
+               (let [new-m (p ::exe (cpu/execute-op m opmap))]
+                 (-> (assoc new-m :mach/last-op op, :mach/last-args (or args []))
                      (update :mach/cycles + cycles))))))))

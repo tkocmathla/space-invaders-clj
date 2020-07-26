@@ -18,7 +18,6 @@
       :features [:no-bind-output]
       :size [w h]
       :setup #(q/no-loop)
-      :settings #(q/no-smooth)
       :draw (fn []
               (q/translate 0 h)
               (q/rotate (q/radians -90))

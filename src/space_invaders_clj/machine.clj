@@ -105,6 +105,6 @@
       :else
       (swap! machine
              (fn [m]
-               (let [new-m (p ::exe (cpu/execute-op m opmap))]
+               (let [new-m (cpu/execute-op m opmap)]
                  (-> (assoc new-m :mach/last-op op, :mach/last-args (or args []))
                      (update :mach/cycles + cycles))))))))

@@ -2,12 +2,12 @@
   (:require
     [datascript.core :as d]
     [i8080-clj.core :as i8080]
+    [i8080-clj.rom :as rom]
     [integrant.core :as ig]
     [quil.core :as q]
     [quil.middleware :as qm]
     [space-invaders-clj.db :as db]
     [space-invaders-clj.machine :as mach]
-    [space-invaders-clj.rom :as rom]
     [space-invaders-clj.sketch :as sketch])
   (:import [processing.core PApplet]))
 

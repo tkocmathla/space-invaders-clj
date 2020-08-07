@@ -1,5 +1,6 @@
 (ns space-invaders-clj.system
   (:require
+    [clojure.java.io :as io]
     [datascript.core :as d]
     [i8080-clj.core :as i8080]
     [i8080-clj.rom :as rom]
@@ -12,11 +13,11 @@
   (:import [processing.core PApplet]))
 
 (def config
-  {:machine {:rom-file "invaders.rom"}
+  {:machine {:rom-file (io/resource "invaders.rom")}
    :sketch {:machine (ig/ref :machine), :scale 2}})
 
 (def debug-config
-  {:machine {:rom-file "invaders.rom"}
+  {:machine {:rom-file (io/resource "invaders.rom")}
    :conn {:schema db/schema, :machine (ig/ref :machine)}
    :log {:conn (ig/ref :conn), :machine (ig/ref :machine)}
    :sketch {:machine (ig/ref :machine), :scale 2}})

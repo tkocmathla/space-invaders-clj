@@ -51,7 +51,7 @@
 ; 0x1cc0 16 alien exploding
 ; 0x1c10  8 alien 2
 #_
-(let [mem (rom/load-rom (:cpu/mem (cpu/cpu)) "invaders.rom")
+(let [mem (rom/load-rom (:cpu/mem (cpu/cpu)) (io/resource "invaders.rom"))
       sprite (sprites/unpack-sprite mem 0x1c10 16)]
   (sprites/draw-sprite sprite {:scale 8}))
 

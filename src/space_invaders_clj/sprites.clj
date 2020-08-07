@@ -3,10 +3,10 @@
 
 (defn unpack-sprite
   [^ints mem offs size]
-  (vec (for [i (range offs (+ offs size))
-             :let [b (aget mem i)]
-             j (range 8)]
-         (if (bit-test b j) 255 0))))
+  (vec (for [addr (range offs (+ offs size))
+             :let [byt (aget mem addr)]
+             bit (range 8)]
+         (if (bit-test byt bit) 255 0))))
 
 (defn draw-sprite
   [sprite & [{:keys [scale] :or {scale 1}}]]

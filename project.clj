@@ -9,7 +9,7 @@
                  [datascript "0.16.7"]
                  [integrant "0.7.0"]
                  [org.clojure/clojure "1.9.0"]
-                 [quil "2.8.0"]
+                 [quil "3.1.0"]
                  [i8080-clj "0.2.0-SNAPSHOT"]]
 
   :target-path "target/%s"

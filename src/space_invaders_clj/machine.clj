@@ -33,9 +33,6 @@
    :space 0x10 ; player 1 shoot
    :left  0x20 ; player 1 move left
    :right 0x40 ; player 1 move right
-
-   ; https://github.com/quil/quil/pull/264
-   (keyword " ") 0x10 ; player 1 shoot
    })
 
 (defn key-down

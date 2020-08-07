@@ -5,10 +5,19 @@
     [quil.core :as q]
     [space-invaders-clj.machine :as mach]))
 
-(def w 224)
-(def h 256)
-(def dimensions [w h])
-(def framebuffer 0x2400)
+(def width
+  "Screen width, in pixels"
+  224)
+
+(def height
+  "Screen height, in pixels"
+  256)
+
+(def dimensions [width height])
+
+(def framebuffer
+  "Address of framebuffer in memory"
+  0x2400)
 
 (defn color [byte-pos bit-offs bit-val]
   (cond
@@ -26,7 +35,7 @@
   is rotated at draw time to appear correctly."
   [scale machine]
   (q/frame-rate 30)
-  {:image (q/create-image h w :rgb)
+  {:image (q/create-image height width :rgb)
    :scale scale
    :machine machine})
 
@@ -37,14 +46,14 @@
   ; about the bottom-left corner to correct framebuffer orientation
   (q/translate 0 (q/height))
   (q/rotate (q/radians -90))
-  (q/resize image h w)
+  (q/resize image height width)
   (let [pxs (q/pixels image)]
     (doseq [xy (range 7168) ; 7168 = 224 * 256 / 8
             :let [byt (get-byte @machine (+ framebuffer xy))]
             bit (range 8)]
       (aset-int pxs (+ (* xy 8) bit) (color xy bit byt))))
   (q/update-pixels image)
-  (q/resize image (* h scale) 0)
+  (q/resize image (* height scale) 0)
   (q/image image 0 0))
 
 (defn key-down [state e]

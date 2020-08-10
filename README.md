@@ -1,4 +1,4 @@
-# space-invaders-clj
+# :space_invader: space-invaders-clj
 
 Space Invaders emulation in Clojure.
 

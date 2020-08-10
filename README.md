@@ -1,36 +1,31 @@
-# space_invaders
+# space-invaders-clj
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
+Space Invaders emulation in Clojure.
 
 ## Usage
 
-FIXME: explanation
+To play the game, clone this repository and do:
 
-    $ java -jar space_invaders-0.1.0-standalone.jar [args]
+    lein run
+    
+### Controls
 
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+    c       insert coin
+    1       1 player game start
+    2       2 player game start (2 or more coins required)
+    space   player 1 shoot
+    left    player 1 move left
+    right   player 1 move right
+    
+Controls for player 2 are handled by a different i/o port, and aren't yet emulated.
 
 ## License
 
-Copyright © 2018 FIXME
+Copyright © 2018-2020 Matt Grimm
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
+## Acknowledgements
+
+* This project owes a lot to [Emulator 101](http://www.emulator101.com) for inspiration and guidance. 

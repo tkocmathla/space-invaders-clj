@@ -1,7 +1,7 @@
 (ns space-invaders-clj.system
   (:require
     [clojure.java.io :as io]
-    [datascript.core :as d]
+    [editscript.core :as ec]
     [i8080-clj.core :as i8080]
     [i8080-clj.rom :as rom]
     [integrant.core :as ig]
@@ -17,10 +17,7 @@
    :sketch {:machine (ig/ref :machine), :scale 2}})
 
 (def debug-config
-  {:machine {:rom-file (io/resource "invaders.rom")}
-   :conn {:schema db/schema, :machine (ig/ref :machine)}
-   :log {:conn (ig/ref :conn), :machine (ig/ref :machine)}
-   :sketch {:machine (ig/ref :machine), :scale 2}})
+  (assoc config :log {:machine (ig/ref :machine)}))
 
 ;; -----------------------------------------------------------------------------
 
@@ -29,14 +26,13 @@
     (atom (assoc (merge cpu mach/initial-machine)
                  :cpu/mem (rom/load-rom (:cpu/mem cpu) rom-file)))))
 
-(defmethod ig/init-key :conn [_ {:keys [schema machine]}]
-  (let [conn (d/create-conn schema)]
-    (d/transact! conn [@machine])
-    conn))
-
-(defmethod ig/init-key :log [_ {:keys [machine conn]}]
-  (let [log (atom [])]
-    (add-watch machine ::log (fn [_ _ _ m] (swap! log conj (d/transact! conn [(assoc m :db/id 1)]))))
+(defmethod ig/init-key :log [_ {:keys [machine]}]
+  (let [log (atom {:cpu-diffs [] :mem-diffs []})
+        f (fn [_ _ old-m new-m]
+            (swap! log #(-> %
+                            (update :cpu-diffs conj (ec/diff old-m new-m {:algo :quick}))
+                            (update :mem-diffs conj (:cpu/last-mem new-m)))))]
+    (add-watch machine ::log f)
     log))
 
 (defmethod ig/init-key :sketch [_ {:keys [machine scale]}]

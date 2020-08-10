@@ -6,7 +6,7 @@
 
   :dependencies [[com.taoensso/timbre "4.10.0"]
                  [com.taoensso/tufte "2.0.1"]
-                 [datascript "0.16.7"]
+                 [juji/editscript "0.4.3"]
                  [integrant "0.7.0"]
                  [org.clojure/clojure "1.9.0"]
                  [quil "3.1.0"]

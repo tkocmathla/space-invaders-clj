@@ -1,6 +1,5 @@
 (ns space-invaders-clj.sketch
   (:require
-    [datascript.core :as d]
     [i8080-clj.opfns :refer [>> get-byte]]
     [quil.core :as q]
     [space-invaders-clj.machine :as mach]))

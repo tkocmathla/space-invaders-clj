@@ -15,8 +15,7 @@
     [space-invaders-clj.system :as system]
     [taoensso.timbre :as log]
     [taoensso.timbre.appenders.core :as appenders]
-    [taoensso.tufte :refer [p profile] :as tufte])
-  (:use [cemerick.pomegranate :only [add-dependencies]]))
+    [taoensso.tufte :refer [p profile] :as tufte]))
 
 ; set up logger and profiler
 (tufte/add-basic-println-handler! {})
@@ -42,6 +41,7 @@
   (ir/set-prep! (constantly system/config))
   (go)
   (future (dorun (repeatedly #(machine/step-cpu (:machine irs/system))))))
+#_(halt)
 #_(reset-all)
 
 ; ------------------------------------------------------------------------------
@@ -50,6 +50,7 @@
 (log/with-level :debug
   (ir/set-prep! (constantly system/debug-config))
   (go))
+#_(halt)
 #_(reset-all)
 
 ; peek at last machine state

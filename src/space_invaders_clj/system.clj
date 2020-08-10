@@ -7,7 +7,6 @@
     [integrant.core :as ig]
     [quil.core :as q]
     [quil.middleware :as qm]
-    [space-invaders-clj.db :as db]
     [space-invaders-clj.machine :as mach]
     [space-invaders-clj.sketch :as sketch])
   (:import [processing.core PApplet]))

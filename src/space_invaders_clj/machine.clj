@@ -23,36 +23,53 @@
    :mach/sh-hi 0
    :mach/sh-off 0
 
-   ; keyboard input port
-   :mach/port1 0})
+   ; players 1 and 2 keyboard input ports
+   :mach/port1 0
+   :mach/port2 0})
 
-(def keymap
+(def port1-keymap
   {:c     1    ; insert coin
-   :2     2    ; player 2 start
-   :1     4    ; player 1 start
+   :2     2    ; 2 player game start
+   :1     4    ; 1 player game start
    :space 0x10 ; player 1 shoot
    :left  0x20 ; player 1 move left
    :right 0x40 ; player 1 move right
    })
 
+(def port2-keymap
+  {:. 0x10 ; player 2 shoot
+   :a 0x20 ; player 2 move left
+   :d 0x40 ; player 2 move right
+   })
+
 (defn key-down
   [machine k]
-  (when (keymap k)
-    (swap! machine update :mach/port1 bit-or (keymap k))))
+  (cond
+    (port1-keymap k)
+    (swap! machine update :mach/port1 bit-or (port1-keymap k))
+
+    (port2-keymap k)
+    (swap! machine update :mach/port2 bit-or (port2-keymap k))))
 
 (defn key-up
   [machine k]
-  (when (keymap k)
-    (swap! machine update :mach/port1 bit-and (- 0xff (long (keymap k))))))
+  (cond
+    (port1-keymap k)
+    (swap! machine update :mach/port1 bit-and (- 0xff (port1-keymap k)))
+
+    (port2-keymap k)
+    (swap! machine update :mach/port2 bit-and (- 0xff (port2-keymap k)))))
 
 (defn handle-in
   "- Reading from port 1 puts the value of port 1 into register a
+   - Reading from port 2 puts the value of port 2 into register a
    - Reading from port 3 puts the shifted result into register a"
   [machine ^long port]
-  (let [{:keys [mach/sh-lo mach/sh-hi ^long mach/sh-off mach/port1]} @machine]
+  (let [{:keys [mach/sh-lo mach/sh-hi ^long mach/sh-off mach/port1 mach/port2]} @machine]
     (case port
       0 (swap! machine assoc :cpu/a 1)
       1 (swap! machine assoc :cpu/a port1)
+      2 (swap! machine assoc :cpu/a port2)
       3 (let [x (| (<< sh-hi 8) sh-lo)
               sh-x (bit-and (long (>> x (- 8 sh-off))) 0xff)]
           (swap! machine assoc :cpu/a sh-x))

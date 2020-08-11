@@ -7,17 +7,20 @@ Space Invaders emulation in Clojure.
 To play the game, clone this repository and do:
 
     lein run
-    
+
 ### Controls
 
     c       insert coin
     1       1 player game start
     2       2 player game start (2 or more coins required)
+
     space   player 1 shoot
     left    player 1 move left
     right   player 1 move right
-    
-Controls for player 2 are handled by a different i/o port, and aren't yet emulated.
+
+    .       player 2 shoot
+    a       player 2 move left
+    d       player 2 move right
 
 ## License
 

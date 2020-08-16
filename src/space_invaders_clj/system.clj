@@ -40,7 +40,7 @@
     :setup #(sketch/setup scale machine)
     :draw sketch/draw
     :middleware [qm/fun-mode]
-    :features [:no-bind-output]
+    :features [:exit-on-close :no-bind-output]
     :key-pressed sketch/key-down
     :key-released sketch/key-up))
 

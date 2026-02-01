@@ -2,6 +2,8 @@
 
 Space Invaders emulation in Clojure.
 
+![Demo](https://github.com/user-attachments/assets/20308800-84be-4604-a516-ca71bcffb969)
+
 ## Usage
 
 To play the game, clone this repository and do:
